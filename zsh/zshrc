@@ -53,7 +53,7 @@ PS1="%(!.%{$fg[red]%U%}.%{$fg[yellow]%})%n%{$reset_color%}@%{$fg[green]%}%m%{$re
 
 #BEGIN Alias definitions
 alias ..="cd .."
-alias clear='printf "\033c"'
+alias clear='printf "\033c"' # This is a workaround for Cygwin.
 
 #END Alias definitions
 
