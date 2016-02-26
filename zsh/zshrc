@@ -1,0 +1,68 @@
+#BEGIN always use tmux
+#if command -v tmux; then
+#        if [ "$TMUX" = "" ]; then 
+#                tmux -2 -f ~/tmux.conf; 
+#        fi
+#fi
+#END always use tmux
+
+#BEGIN lame default initialization
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt autocd extendedglob notify
+bindkey -e
+autoload -Uz compinit
+compinit
+autoload -U colors && colors
+#END lame default initialization
+
+#BEGIN VCS-Support for zsh.
+#Example code from http://stackoverflow.com/questions/1128496/to-get-a-prompt-which-indicates-git-branch-in-zsh
+setopt prompt_subst
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' actionformats \
+    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+zstyle ':vcs_info:*' formats       \
+    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
+zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
+
+zstyle ':vcs_info:*' enable git cvs svn
+
+# or use pre_cmd, see man zshcontrib
+vcs_info_wrapper() {
+  vcs_info
+  if [ -n "$vcs_info_msg_0_" ]; then
+    echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
+  fi
+}
+
+RPROMPT=$'$(vcs_info_wrapper)'
+#END VCS-Support for zsh.
+
+#BEGIN Prompt definition.
+# PART 1: Sets the username color to red, if user has root privileges, otherwise to yellow.
+# PART 2: Just print the hostname in green.
+# PART 3: Print a # if privileged user, > otherwise.
+# PART 1 and PART 2 are separated by an @
+# PART 2 and PART 3 are separated by : and %~, which prints the path relative to user home dir.
+#    |---------------(PART 1)----------------------------| |-----------(PART 2)-----------|   |-(PART 3)-|
+NEWLINE=$'\n'
+PS1="%(!.%{$fg[red]%U%}.%{$fg[yellow]%})%n%{$reset_color%}@%{$fg[green]%}%m%{$reset_color%}:%~%{%}${NEWLINE}%(!.#.>)"
+#END Prompt definition.
+
+#BEGIN Alias definitions
+alias ..="cd .."
+alias clear='printf "\033c"'
+
+#END Alias definitions
+
+#BEGIN Path definitions
+export PATH=$PATH:~/scripts/ # Various scripts, even GTD-on-console.
+#END Path definitions
+
+#BEGIN motd - Using this for GTD-on-console implementation.
+#echo "=Nächste Aufgaben="
+#~/scripts/next
+#END motd
+export PATH=/usr/local/sbin:$PATH
