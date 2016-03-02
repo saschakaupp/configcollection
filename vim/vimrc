@@ -1,14 +1,46 @@
+" ---------------------------------------------------------
+" What I see on the screen:
+" ---------------------------------------------------------
+
+colorscheme slate
+syntax on
 set number
-set relativenumber
+" set cursorline " Highlights the line the curser is at.
+set ruler 
+set showmatch
+set incsearch
+set nowrap
+set visualbell
+set list
+set listchars=tab:>.,trail:.,extends:#,nbsp:.
 
+" ---------------------------------------------------------
+" search behavior
+" ---------------------------------------------------------
+set hlsearch
+set ignorecase
+set smartcase
 
+" ---------------------------------------------------------
+" Text formatting
+" ---------------------------------------------------------
 
+set tabstop=4
+set softtabstop=4
+set expandtab
+set autoindent
+set smarttab
+filetype indent on
 
+" ---------------------------------------------------------
+" editing behavior
+" ---------------------------------------------------------
 
+set nocompatible
 
+" ---------------------------------------------------------
+" file management etc. 
+" ---------------------------------------------------------
 
-
-
-
-
-
+set noswapfile
+set wildignore=*.swp,*.bak,*.class
