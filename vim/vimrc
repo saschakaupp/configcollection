@@ -26,8 +26,9 @@ set smartcase
 " Text formatting
 " ---------------------------------------------------------
 
-set tabstop=4
-set softtabstop=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set expandtab
 set autoindent
 set smarttab
@@ -45,3 +46,33 @@ set nocompatible
 
 set noswapfile
 set wildignore=*.swp,*.bak,*.class
+
+" ---------------------------------------------------------
+" Run all pathogen plugins.
+" ---------------------------------------------------------
+
+execute pathogen#infect()
+
+" ---------------------------------------------------------
+" Configure Syntastic.
+" ---------------------------------------------------------
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
+let g:syntastic_javascript_checkers = ['eslint']
+
+" ---------------------------------------------------------
+" Configure NERDTree.
+" ---------------------------------------------------------
+
+map <C-n> :NERDTreeToggle<CR>
+
+" ---------------------------------------------------------
+" Airline config.
+" ---------------------------------------------------------
+
+set laststatus=2
+
+
