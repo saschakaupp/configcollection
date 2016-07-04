@@ -5,8 +5,9 @@
 colorscheme slate
 syntax on
 set number
-" set cursorline " Highlights the line the curser is at.
-set ruler 
+set cursorline " Highlights the line the curser is at.
+hi CursorLine   cterm=NONE ctermbg=blue ctermfg=white guibg=blue guifg=white
+set ruler
 set showmatch
 set incsearch
 set nowrap
@@ -14,6 +15,11 @@ set visualbell
 set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
 set wrap linebreak
+
+" ---------------------------------------------------------
+" mouse behavior
+" ---------------------------------------------------------
+set mouse=a
 
 " ---------------------------------------------------------
 " search behavior
@@ -41,7 +47,7 @@ filetype indent on
 set nocompatible
 
 " ---------------------------------------------------------
-" file management etc. 
+" file management etc.
 " ---------------------------------------------------------
 
 set noswapfile
@@ -76,3 +82,8 @@ map <C-n> :NERDTreeToggle<CR>
 set laststatus=2
 
 
+" ---------------------------------------------------------
+" Little helpers.
+" ---------------------------------------------------------
+
+command SKnotrail :%s/\s\+$//
