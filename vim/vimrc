@@ -87,3 +87,4 @@ set laststatus=2
 " ---------------------------------------------------------
 
 command SKnotrail :%s/\s\+$//
+command SKsinglequotes :%s/"/'/gc
