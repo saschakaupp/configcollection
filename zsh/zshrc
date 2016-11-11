@@ -54,6 +54,9 @@ PS1="%(!.%{$fg[red]%U%}.%{$fg[yellow]%})%n%{$reset_color%}@%{$fg[green]%}%m%{$re
 #BEGIN Alias definitions
 alias ..="cd .."
 alias clear='printf "\033c"' # This is a workaround for Cygwin.
+LS_COLORS=$LS_COLORS:'di=0;35:'
+export LS_OPTIONS='--color=auto'
+alias ls='ls $LS_OPTIONS'
 
 #END Alias definitions
 
@@ -66,3 +69,4 @@ export PATH=$PATH:~/scripts/ # Various scripts, even GTD-on-console.
 #~/scripts/next
 #END motd
 export PATH=/usr/local/sbin:$PATH
+export FLASCHENPOST_FORMATTER=human
