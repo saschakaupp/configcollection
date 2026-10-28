@@ -1,0 +1,104 @@
+" ---------------------------------------------------------
+" What I see on the screen:
+" ---------------------------------------------------------
+
+" Keep Polyglot's indentation detection; leave its unrelated defaults disabled.
+let g:polyglot_disabled = ['sensible']
+
+syntax on
+if exists('+termguicolors')
+  set termguicolors
+endif
+colorscheme catppuccin_macchiato
+set number
+set cursorline " Highlights the line the curser is at.
+set ruler
+set showmatch
+set incsearch
+set nowrap
+set visualbell
+set list
+set listchars=tab:>.,trail:.,extends:#,nbsp:.
+set wrap linebreak
+
+" ---------------------------------------------------------
+" mouse behavior
+" ---------------------------------------------------------
+set mouse=a
+
+" ---------------------------------------------------------
+" Insert-mode completion
+" ---------------------------------------------------------
+set complete=.,w,b,u,t
+set completeopt=menuone,noinsert,noselect
+
+function! s:tab_complete() abort
+  if pumvisible()
+    return "\<C-n>"
+  endif
+
+  if col('.') > 1 && getline('.')[col('.') - 2] =~# '\k'
+    return "\<C-n>"
+  endif
+
+  return "\<Tab>"
+endfunction
+
+inoremap <expr> <Tab> <SID>tab_complete()
+
+" ---------------------------------------------------------
+" search behavior
+" ---------------------------------------------------------
+set hlsearch
+set ignorecase
+set smartcase
+
+" ---------------------------------------------------------
+" Text formatting
+" ---------------------------------------------------------
+
+filetype plugin indent on
+
+" ---------------------------------------------------------
+" editing behavior
+" ---------------------------------------------------------
+
+set nocompatible
+
+" ---------------------------------------------------------
+" file management etc.
+" ---------------------------------------------------------
+
+set noswapfile
+set wildignore=*.swp,*.bak,*.class
+
+" ---------------------------------------------------------
+" Configure Syntastic.
+" ---------------------------------------------------------
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 1
+let g:syntastic_javascript_checkers = ['eslint']
+
+" ---------------------------------------------------------
+" Configure NERDTree.
+" ---------------------------------------------------------
+
+nnoremap <C-n> :NERDTreeToggle<CR>
+
+" ---------------------------------------------------------
+" Airline config.
+" ---------------------------------------------------------
+
+let g:airline_theme = 'catppuccin_macchiato'
+set laststatus=2
+
+
+" ---------------------------------------------------------
+" Little helpers.
+" ---------------------------------------------------------
+
+command SKnotrail :%s/\s\+$//
+command SKsinglequotes :%s/"/'/gc

@@ -1,0 +1,95 @@
+#BEGIN lame default initialization
+HISTFILE=~/.histfile
+HISTSIZE=20000
+SAVEHIST=20000
+setopt autocd extendedglob notify share_history hist_ignore_all_dups hist_reduce_blanks
+bindkey -e
+autoload -Uz compinit
+zmodload zsh/complist
+compinit
+zstyle ':completion:*' menu select=long
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+autoload -U colors && colors
+#END lame default initialization
+
+#BEGIN VCS-Support for zsh.
+#Example code from http://stackoverflow.com/questions/1128496/to-get-a-prompt-which-indicates-git-branch-in-zsh
+setopt prompt_subst
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' actionformats \
+    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
+zstyle ':vcs_info:*' formats       \
+    '%F{5}(%f%s%F{5})%F{3}-%F{5}[%F{2}%b%F{5}]%f '
+zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
+
+zstyle ':vcs_info:*' enable git cvs svn
+
+# or use pre_cmd, see man zshcontrib
+vcs_info_wrapper() {
+  vcs_info
+  if [ -n "$vcs_info_msg_0_" ]; then
+    echo "%{$fg[grey]%}${vcs_info_msg_0_}%{$reset_color%}$del"
+  fi
+}
+
+RPROMPT=$'$(vcs_info_wrapper)'
+#END VCS-Support for zsh.
+
+#BEGIN Prompt definition.
+# PART 1: Sets the username color to red, if user has root privileges, otherwise to yellow.
+# PART 2: Just print the hostname in green.
+# PART 3: Print a # if privileged user, > otherwise.
+# PART 1 and PART 2 are separated by an @
+# PART 2 and PART 3 are separated by : and %~, which prints the path relative to user home dir.
+#    |---------------(PART 1)----------------------------| |-----------(PART 2)-----------|   |-(PART 3)-|
+NEWLINE=$'\n'
+PS1="%(!.%{$fg[red]%U%}.%{$fg[yellow]%})%n%{$reset_color%}@%{$fg[green]%}%m%{$reset_color%}:%~%{%}${NEWLINE}%(!.#.>)"
+#END Prompt definition.
+
+#BEGIN Alias definitions
+alias ..="cd .."
+tx() {
+    if (( $+commands[tmux] )); then
+        if [[ -n "$TMUX" ]]; then
+            if [[ -n "$1" ]]; then
+                tmux -2 switch-client -t "$1"
+            else
+                print -u2 'Already inside tmux; pass a session name to switch sessions'
+                return
+            fi
+        elif tmux -2 has-session 2>/dev/null; then
+            tmux -2 attach-session ${1:+-t "$1"}
+        else
+            tmux -2 new-session ${1:+-s "$1"}
+        fi
+    else
+        print -u2 'tmux is not installed or is not on PATH'
+        return 127
+    fi
+}
+alias clear='printf "\033c"' # This is a workaround for Cygwin.
+case "$OSTYPE" in
+    linux*|cygwin*)
+        LS_COLORS="${LS_COLORS:+${LS_COLORS}:}di=0;35:"
+        export LS_COLORS
+        alias ls='ls --color=auto'
+        ;;
+    darwin*)
+        export CLICOLOR=1
+        export LSCOLORS='fxfxcxdxbxegedabagacad'
+        alias ls='ls -G'
+        ;;
+esac
+
+#END Alias definitions
+
+#BEGIN Path definitions
+export PATH=$PATH:~/scripts/ # Various scripts, even GTD-on-console.
+#END Path definitions
+
+#BEGIN motd - Using this for GTD-on-console implementation.
+#echo "=Nächste Aufgaben="
+#~/scripts/next
+#END motd
+export PATH=/usr/local/sbin:$PATH
+export FLASCHENPOST_FORMATTER=human
